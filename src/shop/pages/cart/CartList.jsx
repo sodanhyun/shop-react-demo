@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import "../../css/CartList.css";
@@ -6,45 +6,17 @@ import fetcher from "../../../fetcher";
 import { CART, CART_ITEM, CART_ORDER } from "../../../constants/api_constant";
 
 export default function CartList() {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const [cartItems, setCartItems] = useState([]);
     const [checkedItemIds, setCheckedItemIds] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
-
-    const loadCartList = async () => {
-        try{
-            const response = await fetcher.get(CART);
-            setCartItems(response.data);
-        }catch(error) {
-            alert(error.response.data);
-        }
-    };
-
-    const updateCount = async (id, count) => {
-        try{
-            await fetcher.patch(CART_ITEM + `/${id}?count=${count}`);
-            setCartItems(prev => {
-                prev.find((el) =>  {
-                    if(el.cartItemId === id) {
-                        el.count = count;
-                    }
-                });
-                return [...prev];
-            });
-        }catch(error) {
-            alert(error.response.data);
-        }
-    };
-
-    const deleteCartItem = async (id) => {
-        try{
-            await fetcher.delete(CART_ITEM + `/${id}`);
-            setCheckedItemIds((prev) => prev.filter((e) => e !== id));
-            setCartItems((prev) => prev.filter((e) => e.cartItemId !== id));
-        }catch(error) {
-            alert(error.response.data);
-        }
-    }
+    const totalPrice = useMemo(() => function(){
+        let totalPrice = 0;
+        checkedItemIds.forEach((id) => {
+            const cartItem = cartItems.find((e) => e.cartItemId === id);
+            totalPrice += cartItem.count * cartItem.price;
+        });
+        return totalPrice;
+    }(), [cartItems, checkedItemIds]);
 
     const orders = async () => {
         let dataList = new Array();
@@ -84,30 +56,14 @@ export default function CartList() {
         setCheckedItemIds([]);
     }
 
-    const isChecked = (id) => {
-        if(checkedItemIds.find((e) => e === id)) {
-            return true;
+    const loadCartList = async () => {
+        try{
+            const response = await fetcher.get(CART);
+            setCartItems(response.data);
+        }catch(error) {
+            alert(error.response.data);
         }
-        return false;
-    }
-
-    const calcTotal = () => {
-        let totalPrice = 0;
-        checkedItemIds.forEach((id) => {
-            const cartItem = cartItems.find((e) => e.cartItemId === id);
-            totalPrice += cartItem.count * cartItem.price;
-        });
-        return totalPrice;
-    }
-
-    const checkCartItem = (id) => {
-        setCheckAll(false);
-        if(checkedItemIds.find((e) => e === id)) {
-            setCheckedItemIds((prev) => prev.filter((e) => e !== id));
-            return;
-        }
-        setCheckedItemIds((prev) => [...prev, id]);
-    }
+    };
 
     useEffect(() => {
         loadCartList();
@@ -141,52 +97,19 @@ export default function CartList() {
                     </thead>
                     <tbody>
                     {cartItems?.map((cartItem) => 
-                        <tr key={cartItem.cartItemId}>
-                            <td className="text-center align-middle">
-                                <input 
-                                type="checkbox" 
-                                name="cartChkBox" 
-                                checked={isChecked(cartItem.cartItemId)}
-                                onChange={() => checkCartItem(cartItem.cartItemId)}
-                                />
-                            </td>
-                            <td className="d-flex">
-                                <div className="repImgDiv align-self-center">
-                                    <img 
-                                    src={API_BASE_URL + cartItem.imgUrl} 
-                                    className = "rounded repImg" 
-                                    alt={cartItem.itemNm}
-                                    />
-                                </div>
-                                <div className="align-self-center">
-                                    <span className="fs24 font-weight-bold">{cartItem.itemNm}</span>
-                                    <div className="fs18 font-weight-light">
-                                        <span className="input-group mt-2">
-                                            <span className="align-self-center mr-2">{cartItem.price}원</span>
-                                            <input
-                                            type="number" 
-                                            min="1"
-                                            className="form-control mr-2" 
-                                            value={cartItem.count}
-                                            onChange={(e) => updateCount(cartItem.cartItemId, e.target.value)}
-                                            />
-                                            <button type="button" className="close" aria-label="Close">
-                                                <span onClick={() => deleteCartItem(cartItem.cartItemId)}>&times;</span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="text-center align-middle">
-                                <span>{cartItem.price*cartItem.count}원</span>
-                            </td>
-                        </tr>
+                        <CartItem
+                            cartItem={cartItem}
+                            setCartItems={setCartItems}
+                            checkedItemIds={checkedItemIds}
+                            setCheckAll={setCheckAll}
+                            setCheckedItemIds={setCheckedItemIds}
+                        />
                     )}
                     </tbody>
                 </table>
 
                 <h2 className="text-center">
-                    총 주문 금액 : <span className="text-danger">{calcTotal()}원</span>
+                    총 주문 금액 : <span className="text-danger">{totalPrice}원</span>
                 </h2>
 
                 <div className="text-center mt-3">
@@ -198,4 +121,90 @@ export default function CartList() {
         <Footer/>
         </>
     )
+}
+
+function CartItem({cartItem, setCartItems, checkedItemIds, setCheckAll, setCheckedItemIds}) {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+    const updateCount = async (id, count) => {
+        try{
+            await fetcher.patch(CART_ITEM + `/${id}?count=${count}`);
+            setCartItems(prev => {
+                prev.find((el) =>  {
+                    if(el.cartItemId === id) {
+                        el.count = count;
+                    }
+                });
+                return [...prev];
+            });
+        }catch(error) {
+            alert(error.response.data);
+        }
+    };
+
+    const deleteCartItem = async (id) => {
+        try{
+            await fetcher.delete(CART_ITEM + `/${id}`);
+            setCheckedItemIds((prev) => prev.filter((e) => e !== id));
+            setCartItems((prev) => prev.filter((e) => e.cartItemId !== id));
+        }catch(error) {
+            alert(error.response.data);
+        }
+    }
+
+    const checkCartItem = (id) => {
+        setCheckAll(false);
+        if(checkedItemIds.find((e) => e === id)) {
+            setCheckedItemIds((prev) => prev.filter((e) => e !== id));
+            return;
+        }
+        setCheckedItemIds((prev) => [...prev, id]);
+    }
+
+    const isChecked = (id) => {
+        return !!checkedItemIds.find((e) => e === id)
+    }
+
+    return (
+        <tr key={cartItem.cartItemId}>
+            <td className="text-center align-middle">
+                <input 
+                type="checkbox" 
+                name="cartChkBox" 
+                checked={isChecked(cartItem.cartItemId)}
+                onChange={() => checkCartItem(cartItem.cartItemId)}
+                />
+            </td>
+            <td className="d-flex">
+                <div className="repImgDiv align-self-center">
+                    <img 
+                    src={API_BASE_URL + cartItem.imgUrl} 
+                    className = "rounded repImg" 
+                    alt={cartItem.itemNm}
+                    />
+                </div>
+                <div className="align-self-center">
+                    <span className="fs24 font-weight-bold">{cartItem.itemNm}</span>
+                    <div className="fs18 font-weight-light">
+                        <span className="input-group mt-2">
+                            <span className="align-self-center mr-2">{cartItem.price}원</span>
+                            <input
+                            type="number" 
+                            min="1"
+                            className="form-control mr-2" 
+                            value={cartItem.count}
+                            onChange={(e) => updateCount(cartItem.cartItemId, e.target.value)}
+                            />
+                            <button type="button" className="close" aria-label="Close">
+                                <span onClick={() => deleteCartItem(cartItem.cartItemId)}>&times;</span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </td>
+            <td className="text-center align-middle">
+                <span>{cartItem.price*cartItem.count}원</span>
+            </td>
+        </tr>
+    );
 }
