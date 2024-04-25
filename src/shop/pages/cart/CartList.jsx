@@ -60,11 +60,9 @@ export default function CartList() {
             const response = await fetcher.post(
                 CART_ORDER,
                 JSON.stringify(paramData),
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }
+                {headers: {
+                    "Content-Type": "application/json",
+                }}
             )
             alert(response.data);
         }catch(error) {
@@ -148,30 +146,31 @@ export default function CartList() {
                                 type="checkbox" 
                                 name="cartChkBox" 
                                 checked={isChecked(cartItem.cartItemId)}
-                                onChange={() => checkCartItem(cartItem.cartItemId)}/>
+                                onChange={() => checkCartItem(cartItem.cartItemId)}
+                                />
                             </td>
                             <td className="d-flex">
                                 <div className="repImgDiv align-self-center">
-                                    <img src={API_BASE_URL + cartItem.imgUrl} className = "rounded repImg" alt={cartItem.itemNm}/>
+                                    <img 
+                                    src={API_BASE_URL + cartItem.imgUrl} 
+                                    className = "rounded repImg" 
+                                    alt={cartItem.itemNm}
+                                    />
                                 </div>
                                 <div className="align-self-center">
                                     <span className="fs24 font-weight-bold">{cartItem.itemNm}</span>
                                     <div className="fs18 font-weight-light">
                                         <span className="input-group mt-2">
-                                            <span className="align-self-center mr-2">
-                                                    {cartItem.price}원
-                                            </span>
+                                            <span className="align-self-center mr-2">{cartItem.price}원</span>
                                             <input
                                             type="number" 
                                             min="1"
                                             className="form-control mr-2" 
                                             value={cartItem.count}
-                                            onChange={(e) => {
-                                                updateCount(cartItem.cartItemId, e.target.value);
-                                            }}
+                                            onChange={(e) => updateCount(cartItem.cartItemId, e.target.value)}
                                             />
                                             <button type="button" className="close" aria-label="Close">
-                                                <span aria-hidden="true" onClick={() => deleteCartItem(cartItem.cartItemId)}>&times;</span>
+                                                <span onClick={() => deleteCartItem(cartItem.cartItemId)}>&times;</span>
                                             </button>
                                         </span>
                                     </div>
@@ -192,9 +191,8 @@ export default function CartList() {
                 <div className="text-center mt-3">
                     <button type="button" className="btn btn-primary btn-lg" onClick={() => orders()}>주문하기</button>
                 </div>
-
+                
             </div>
-
         </div>
         <Footer/>
         </>

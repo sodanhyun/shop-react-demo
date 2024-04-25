@@ -14,7 +14,6 @@ export default function Main() {
     const [maxPageNum, setMaxPageNum] = useState(0);
     const [pageNum, setPageNum] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const loadPage = async (page) => {
         try{
@@ -44,17 +43,10 @@ export default function Main() {
 
     return(
         <>
-        <Header
-            mainSearch={mainSearch}
-        />
+        <Header mainSearch={mainSearch} />
+
         <div className="content">
-            <div id="carouselControls" className="carousel slide margin" data-ride="carousel">
-                <div className="carousel-inner">
-                    <div className="carousel-item active item">
-                        <img className="d-block w-100 banner" src="https://user-images.githubusercontent.com/13268420/112147492-1ab76200-8c20-11eb-8649-3d2f282c3c02.png" alt="First slide"/>
-                    </div>
-                </div>
-            </div>
+            <Banner/>
 
             {searchQuery && 
                 <div class="center">
@@ -64,18 +56,7 @@ export default function Main() {
 
             <div className="row" style={{width: '95%'}}>
                 {items.map((item) => 
-                    <div className="col-md-4 margin">
-                        <div className="card">
-                            <Link to={ITEM_DTL + `/${item.id}`} className="text-dark">
-                                <img src={API_BASE_URL + item.imgUrl} className="card-img-top" alt={item.itemNm} height="400"/>
-                                <div className="card-body">
-                                    <h4 className="card-title">{item.itemNm}</h4>
-                                    <p className="card-text">{item.itemDetail}</p>
-                                    <h3 className="card-title text-danger">{item.price}원</h3>
-                                </div>
-                            </Link>
-                        </div>
-                    </div>
+                    <ItemCard item={item} />
                 )}
             </div>
 
@@ -86,8 +67,38 @@ export default function Main() {
                 pageNum={pageNum}
             />
 
-            </div>
-            <Footer/>
+        </div>
+        <Footer/>
         </>
+    )
+}
+
+function Banner() {
+    return (
+        <div id="carouselControls" className="carousel slide margin" data-ride="carousel">
+            <div className="carousel-inner">
+                <div className="carousel-item active item">
+                    <img className="d-block w-100 banner" src="https://user-images.githubusercontent.com/13268420/112147492-1ab76200-8c20-11eb-8649-3d2f282c3c02.png" alt="First slide"/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ItemCard({item}) {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+    return(
+        <div className="col-md-4 margin">
+            <div className="card">
+                <Link to={ITEM_DTL + `/${item.id}`} className="text-dark">
+                    <img src={API_BASE_URL + item.imgUrl} className="card-img-top" alt={item.itemNm} height="400"/>
+                    <div className="card-body">
+                        <h4 className="card-title">{item.itemNm}</h4>
+                        <p className="card-text">{item.itemDetail}</p>
+                        <h3 className="card-title text-danger">{item.price}원</h3>
+                    </div>
+                </Link>
+            </div>
+        </div>
     )
 }

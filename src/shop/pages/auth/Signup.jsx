@@ -5,6 +5,7 @@ import { LOGIN } from "../../../constants/page_constant";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "axios";
+import TextField from "../../components/TextField";
 
 export default function Signup() {
     const [id, setId] = useState("");
@@ -42,50 +43,36 @@ export default function Signup() {
         <Header/>
         <div className="content">
             <form role="form" onSubmit={handleSignup}>
-                <div className="form-group">
-                    <label htmlFor="name">이름</label>
-                    <input 
-                    type="text"
-                    className="form-control" 
-                    placeholder="이름을 입력해주세요"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">이메일주소</label>
-                    <input 
-                    type="email" 
-                    className="form-control" 
-                    placeholder="이메일을 입력해주세요"
-                    required
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">비밀번호</label>
-                    <input 
-                    type="password"
-                    className="form-control" 
-                    placeholder="비밀번호 입력"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="address">주소</label>
-                    <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="주소를 입력해주세요"
-                    required
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    />
-                </div>
+                <TextField
+                title="이름"
+                placeholder="이름을 입력해주세요"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                title="이메일주소"
+                type="email" 
+                placeholder="이메일을 입력해주세요"
+                required
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                />
+                <TextField
+                title="비밀번호"
+                type="password"
+                placeholder="비밀번호 입력"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                />
+                <TextField
+                title="주소"
+                placeholder="주소를 입력해주세요"
+                required
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                />
                 {error && <p style={{color:'red'}}>{error}</p>}
                 <div style={{textAlign: 'center'}}>
                     <button type="submit" className="btn btn-primary">Submit</button>

@@ -1,4 +1,4 @@
-import { MAIN } from "../constants/page_constant";
+import { MAIN } from "../../../constants/page_constant"
 import { Link } from "react-router-dom";
 
 export default function Page403() {

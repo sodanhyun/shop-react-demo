@@ -9,10 +9,11 @@ import {
   ORDER_HIST,
   ITEM_FORM,
   ITEM_MNG,
-  ITEM_DTL
+  ITEM_DTL,
+  ITEM_UPDATE_FORM
 } from "./constants/page_constant";
-import Page403 from "./errorPages/Page403";
-import Page404 from "./errorPages/Page404";
+import Page403 from "./shop/pages/errorPages/Page403";
+import Page404 from "./shop/pages/errorPages/Page404";
 import Main from "./shop/pages/Main";
 import Login from "./shop/pages/auth/Login";
 import Signup from "./shop/pages/auth/Signup";
@@ -21,6 +22,7 @@ import OrderHist from "./shop/pages/order/OrderHist";
 import ItemForm from "./shop/pages/item/ItemForm";
 import ItemMng from "./shop/pages/item/ItemMng";
 import ItemDtl from "./shop/pages/item/ItemDtl";
+import ItemUpdateForm from "./shop/pages/item/ItemUpdateForm";
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
         <Route path={CART_LIST} element={<CartList/>}/>
         <Route path={ORDER_HIST} element={<OrderHist/>}/>
         <Route path={ITEM_FORM} element={<ItemForm/>}/>
-        <Route path={ITEM_FORM + '/:id'} element={<ItemForm/>}/>
+        <Route path={ITEM_UPDATE_FORM + '/:id'} element={<ItemUpdateForm/>}/>
         <Route path={ITEM_MNG} element={<ItemMng/>}/>
         <Route path={ITEM_DTL + '/:id'} element={<ItemDtl/>}/>
         <Route path={PAGE_403} element={<Page403/>}></Route>

@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { LOGIN_API } from "../../../constants/api_constant";
 import { MAIN, SIGN_UP } from "../../../constants/page_constant";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import TextField from "../../components/TextField";
 
 export default function Login() {
     const [id, setId] = useState("");
@@ -41,31 +42,22 @@ export default function Login() {
         <Header/>
         <div className="content">
             <form role="form" onSubmit={handleLogin}>
-                <div className="form-group">
-                    <label htmlFor="email">이메일주소</label>
-                    <input 
-                    type="email" 
-                    name="email" 
-                    className="form-control"
-                    placeholder="이메일을 입력해주세요"
-                    required
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">비밀번호</label>
-                    <input 
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    className="form-control" 
-                    placeholder="비밀번호 입력"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+                <TextField
+                title="이메일 주소"
+                type="email"
+                placeholder="이메일을 입력해주세요"
+                required
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                />
+                <TextField
+                title="비밀번호"
+                type="password"
+                placeholder="비밀번호 입력"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                />
                 {error && <p style={{color:'red'}}>{error}</p>}
                 <button type="submit" className="btn btn-primary">로그인</button>
                 <Link className="btn btn-primary" to={SIGN_UP}>회원가입</Link>

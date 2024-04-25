@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MAIN } from "../constants/page_constant";
+import { MAIN } from "../../../constants/page_constant"
 
 export default function Page404() {
     return(
