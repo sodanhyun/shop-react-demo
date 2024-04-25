@@ -13,7 +13,6 @@ import InputFile from "../../components/item/InputFile";
 import InputField from "../../components/item/InputField";
 
 export default function ItemUpdateForm() {
-    const params = useParams();
     const [itemSellStatus, setItemSellStatus] = useState("SELL");
     const [id, setId] = useState(null);
     const [itemNm, setItemNm] = useState("");
@@ -23,6 +22,7 @@ export default function ItemUpdateForm() {
     const [itemImages, setItemImages] = useState([]);
     const [itemImgDtoList, setItemImgDtoList] = useState([]);
     const [itemImgIds, setItemImgIds] = useState([]);
+    const params = useParams();
     const navigate = useNavigate();
 
     const loadItemDtl = async (itemId) => {

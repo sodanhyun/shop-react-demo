@@ -8,34 +8,34 @@ import Footer from "../../components/Footer";
 import TextField from "../../components/TextField";
 
 export default function Login() {
-    const [id, setId] = useState("");
-    const [password, setPassword] = useState("");
+    const [data, setData] = useState({
+        id: "",
+        address: ""
+    });
     const [error, setError] = useState("");
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
         try{
-            const formData = new FormData();
-            formData.append("id", id);
-            formData.append("password", password);
-
             const response = await axios.post(
                 API_BASE_URL + LOGIN_API,
-                formData
+                data
             )
-
             localStorage.setItem("access_token", response.data.accessToken);
             localStorage.setItem("refresh_token", response.data.refreshToken);
             localStorage.setItem("authority", response.data.authority);
-
             navigate(MAIN);
         }catch(error) {
             setError("아이디 또는 비밀번호가 잘못되었습니다");
         }
     }
+
+    const onChangeHandler = (e) => {
+        const {value, name} = e.target;
+        setData({ ...data, [name]: value})
+    };
 
     return(
         <>
@@ -47,16 +47,18 @@ export default function Login() {
                 type="email"
                 placeholder="이메일을 입력해주세요"
                 required
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+                name="id"
+                value={data.id}
+                onChange={onChangeHandler}
                 />
                 <TextField
                 title="비밀번호"
                 type="password"
                 placeholder="비밀번호 입력"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={data.password}
+                onChange={onChangeHandler}
                 />
                 {error && <p style={{color:'red'}}>{error}</p>}
                 <button type="submit" className="btn btn-primary">로그인</button>

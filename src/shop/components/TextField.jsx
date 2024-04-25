@@ -9,6 +9,7 @@ export default function TextField({title, name, type='text', ...props}) {
             <input 
             type={type}
             id={id}
+            name={name}
             className="form-control"
             {...props}
             />

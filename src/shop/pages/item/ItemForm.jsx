@@ -13,32 +13,24 @@ import InputArea from "../../components/item/InputArea";
 import InputFile from "../../components/item/InputFile";
 
 export default function ItemForm() {
-    const [itemSellStatus, setItemSellStatus] = useState("SELL");
-    const [itemNm, setItemNm] = useState("");
-    const [price, setPrice] = useState(0);
-    const [stockNumber, setStockNumber] = useState(0);
-    const [itemDetail, setItemDetail] = useState("");
+    const [data, setData] = useState({
+        itemSellStatus: "SELL",
+        itemNm: "",
+        price: 0,
+        stockNumber: 0,
+        itemDetail: ""
+    });
     const [itemImages, setItemImages] = useState([]);
     const navigate = useNavigate();
 
     const handleSave = async (e) => {
-        const data = {
-            itemSellStatus: itemSellStatus,
-            itemNm: itemNm,
-            price: price,
-            stockNumber: stockNumber,
-            itemDetail: itemDetail
-        }
-        
         try{
             const formData = new FormData();
             formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}));
             for(let i=0;  i<itemImages.length; i++) {
                 formData.append("itemImgFile", itemImages[i]);
             }
-
             const response = await fetcher.post(ADMIN_ITEM_NEW, formData);
-
             alert(response.data);
             navigate(MAIN);
         }catch(error) {
@@ -64,6 +56,11 @@ export default function ItemForm() {
         setItemImages(prev => [...prev, target.files[0]]);
     }
 
+    const onChangeHandler = (e) => {
+        const {value, name} = e.target;
+        setData({ ...data, [name]: value})
+    };
+
     useEffect(() => {
         if(localStorage.getItem("authority") !== "ROLE_ADMIN") {
             navigate(PAGE_403);
@@ -77,8 +74,9 @@ export default function ItemForm() {
             <p className="h2">상품 등록</p>
 
             <InputSelect
-            value={itemSellStatus}
-            onChange={(e) => setItemSellStatus(e.target.value)}>
+            name="itemSellStatus"
+            value={data.itemSellStatus}
+            onChange={onChangeHandler}>
                 <option value="SELL">판매중</option>
                 <option value="SOLD_OUT">품절</option>
             </InputSelect>
@@ -86,30 +84,34 @@ export default function ItemForm() {
             title="상품명"
             placeholder="상품명을 입력해주세요"
             required
-            value={itemNm}
-            onChange={(e) => setItemNm(e.target.value)}
+            name="itemNm"
+            value={data.itemNm}
+            onChange={onChangeHandler}
             />
             <InputField
             title="가격"
             type="number"
             placeholder="상품의 가격을 입력해주세요"
             required
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
+            value={data.price}
+            onChange={onChangeHandler}
             />
             <InputField
             title="재고"
             type="number"
             placeholder="상품의 재고를 입력해주세요"
             required
-            value={stockNumber}
-            onChange={(e) => setStockNumber(e.target.value)}
+            name="stockNumber"
+            value={data.stockNumber}
+            onChange={onChangeHandler}
             />
             <InputArea
             title="상품 상세 내용"
             required
-            value={itemDetail}
-            onChange={(e) => setItemDetail(e.target.value)}
+            name="itemDetail"
+            value={data.itemDetail}
+            onChange={onChangeHandler}
             />
 
             <div className="form-group">
