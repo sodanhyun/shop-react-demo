@@ -63,6 +63,9 @@ export default function CartList() {
                 }}
             )
             alert(response.data);
+            setCheckedItemIds([]);
+            setCheckAll(false);
+            loadCartList();
         }catch(error) {
             alert(error.response.data);
         }
@@ -138,7 +141,7 @@ export default function CartList() {
                     </thead>
                     <tbody>
                     {cartItems?.map((cartItem) => 
-                        <tr>
+                        <tr key={cartItem.cartItemId}>
                             <td className="text-center align-middle">
                                 <input 
                                 type="checkbox" 

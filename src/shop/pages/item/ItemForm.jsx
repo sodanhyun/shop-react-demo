@@ -115,6 +115,7 @@ export default function ItemForm() {
             <div className="form-group">
             {Array(5).fill(0).map((_, index) => 
                 <InputFile
+                    key={index}
                     title={`상품이미지${index}`}
                     onChange={(e) => attach(e.target)}
                 />

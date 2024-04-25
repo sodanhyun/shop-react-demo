@@ -16,9 +16,9 @@ export default function ItemMng() {
 
     const loadPage = async (page, data) => {
         const searchData = {
-            searchDateType: data ? data.searchDateType : null,
+            searchDateType: data ? data.searchDateType : "all",
             searchSellStatus: data ? data.searchSellStatus : null,
-            searchBy: data ? data.searchBy : "",
+            searchBy: data ? data.searchBy : "itemNm",
             searchQuery: data ? data.searchQuery : ""
         };
         try{
@@ -50,14 +50,12 @@ export default function ItemMng() {
             <Items items={items} />
         </div>
 
-        <Paging
-        loadPage={loadPage}
+        <PageSearchBar 
+        loadfunc={loadPage} 
         totalPages={totalPages}
         maxPageNum={maxPageNum}
         pageNum={pageNum}
         />
-
-        <SearchBar loadfunc={loadPage} />
 
         <Footer/>
         </>
@@ -77,8 +75,9 @@ function Items({items}) {
                 </tr>
             </thead>
             <tbody>
-                {items.map((item) => 
+                {items?.map((item) => 
                     <Item 
+                    key={item.id}
                     item={item}
                     />
                 )}
@@ -100,23 +99,30 @@ function Item({item}) {
     )
 }
 
-function SearchBar({loadfunc}) {
-    const [searchDateType, setSearchDateType] = useState(null);
+function PageSearchBar({loadfunc, totalPages, maxPageNum, pageNum}) {
+    const [searchDateType, setSearchDateType] = useState("all");
     const [searchSellStatus, setSearchSellStatus] = useState(null);
     const [searchBy, setSearchBy] = useState("itemNm");
     const [searchQuery, setSearchQuery] = useState("");
 
-    const search = () => {
+    const search = (page) => {
         const searchData = {
             searchDateType: searchDateType,
             searchSellStatus: searchSellStatus,
             searchBy: searchBy,
             searchQuery: searchQuery
         };
-        loadfunc(0, searchData);
+        loadfunc(page, searchData);
     }
 
     return (
+        <>
+        <Paging
+        loadPage={search}
+        totalPages={totalPages}
+        maxPageNum={maxPageNum}
+        pageNum={pageNum}
+        />
         <div className="form-inline justify-content-center">
             <SearchSelect
             value={searchDateType}
@@ -130,7 +136,7 @@ function SearchBar({loadfunc}) {
             </SearchSelect>
 
             <SearchSelect
-            value={searchSellStatus}
+            value={!searchSellStatus && ""}
             onchangefunc={setSearchSellStatus}
             >
                 <option value="">판매상태(전체)</option>
@@ -153,8 +159,10 @@ function SearchBar({loadfunc}) {
             onChange={(e) => setSearchQuery(e.target.value)}
             />
             
-            <button onClick={() => search()} className="btn btn-primary">검색</button>
+            <button onClick={() => search(0)} className="btn btn-primary">검색</button>
         </div>
+        </>
+        
     )
 }
 

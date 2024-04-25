@@ -132,7 +132,7 @@ export default function ItemDtl() {
             </div>
             
             {item.itemImgDtoList?.map((itemImg) => 
-                <div className="text-center">
+                <div key={itemImg.id} className="text-center">
                     <img src={API_BASE_URL + itemImg.imgUrl} className="rounded mgb-15" width="800"/>
                 </div>
             )}

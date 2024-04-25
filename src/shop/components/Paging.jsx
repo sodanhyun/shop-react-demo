@@ -8,8 +8,6 @@ export default function Paging({loadPage, totalPages, maxPageNum, pageNum}) {
         const startVal = Math.floor(pageNum/maxPageNum)*maxPageNum + 1;
         const endVal = (totalPages == 0) ? 1 : startVal + (maxPageNum - 1) < totalPages ? startVal + (maxPageNum - 1) : totalPages;
         setPageRange(getIntegerArray(startVal, endVal));
-        // console.log(startVal);
-        // console.log(endVal);
     };
 
     const getIntegerArray = (start, end) => {
@@ -34,7 +32,7 @@ export default function Paging({loadPage, totalPages, maxPageNum, pageNum}) {
                 </li>
 
                 {pageRange.map((num) => 
-                    <li className= {"page-item" + (pageNum == (num-1) ? ' active' : '')}>
+                    <li key={num} className= {"page-item" + (pageNum == (num-1) ? ' active' : '')}>
                         <a onClick={() => loadPage(num-1)} className="page-link">{num}</a>
                     </li>
                 )}

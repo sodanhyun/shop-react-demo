@@ -59,7 +59,7 @@ export default function ItemUpdateForm() {
                 formData.append("itemImgFile", itemImages[i]);
             }
 
-            const response = await fetcher.post(ADMIN_ITEM, formData);
+            const response = await fetcher.patch(ADMIN_ITEM, formData);
             alert(response.data);
             navigate(MAIN);
         }catch(error) {
@@ -142,6 +142,7 @@ export default function ItemUpdateForm() {
             <div className="form-group">
             {itemImgDtoList?.map((itemImgDto, index) => 
                 <InputFile
+                    key={itemImgDto.id}
                     title={itemImgDto ? itemImgDto.oriImgName : `상품이미지${index}`}
                     onChange={(e) => attach(e.target, itemImgDto.id)}
                 />

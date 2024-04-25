@@ -54,9 +54,9 @@ export default function Main() {
                 </div>
             }
 
-            <div className="row" style={{width: '95%'}}>
+            <div className="row">
                 {items.map((item) => 
-                    <ItemCard item={item} />
+                    <ItemCard key={item.id} item={item} />
                 )}
             </div>
 
@@ -88,10 +88,10 @@ function Banner() {
 function ItemCard({item}) {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     return(
-        <div className="col-md-4 margin">
+        <div className="col margin">
             <div className="card">
                 <Link to={ITEM_DTL + `/${item.id}`} className="text-dark">
-                    <img src={API_BASE_URL + item.imgUrl} className="card-img-top" alt={item.itemNm} height="400"/>
+                    <img src={API_BASE_URL + item.imgUrl} className="card-img-top" alt={item.itemNm}/>
                     <div className="card-body">
                         <h4 className="card-title">{item.itemNm}</h4>
                         <p className="card-text">{item.itemDetail}</p>

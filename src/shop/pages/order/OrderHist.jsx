@@ -47,6 +47,7 @@ export default function OrderHist() {
 
             {orders?.map((order) => 
                 <Order
+                key={order.orderId}
                 order={order}
                 cancelfunc={cancelOrder}
                 />
@@ -80,6 +81,7 @@ function Order({order, cancelfunc}) {
             <div className="card d-flex">
             {order.orderItemDtoList.map((orderItem) => 
                 <OrderItem
+                key={orderItem.id}
                 orderItem={orderItem}
                 />
             )}

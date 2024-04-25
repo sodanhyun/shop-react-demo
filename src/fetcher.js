@@ -26,16 +26,16 @@ fetcher.interceptors.response.use(
         return response;
     },
     async (error) => {
-        if(error.response.status === 401) {
+        if(error.response.status === 401 || error.response.status === 403) {
             await tokenRefresh();
             const accessToken = localStorage.getItem("access_token");
             error.config.headers['Authentication'] = `Bearer ${accessToken}`;
             const response = await axios.request(error.config);
             return response;
         }
-        if(error.response.status === 403) {
-            alert("해당 페이지 권한이 없습니다");
-        }
+        // if() {
+        //     alert("해당 페이지 권한이 없습니다");
+        // }
         return Promise.reject(error);
     }
 )
