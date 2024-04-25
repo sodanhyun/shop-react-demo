@@ -22,8 +22,7 @@ export default function CartList() {
 
     const updateCount = async (id, count) => {
         try{
-            const response = await fetcher.patch(CART_ITEM + `/${id}?count=${count}`);
-            console.log(response.data);
+            await fetcher.patch(CART_ITEM + `/${id}?count=${count}`);
             setCartItems(prev => {
                 prev.find((el) =>  {
                     if(el.cartItemId === id) {
@@ -39,8 +38,7 @@ export default function CartList() {
 
     const deleteCartItem = async (id) => {
         try{
-            const response = await fetcher.delete(CART_ITEM + `/${id}`);
-            console.log(response.data);
+            await fetcher.delete(CART_ITEM + `/${id}`);
             setCheckedItemIds((prev) => prev.filter((e) => e !== id));
             setCartItems((prev) => prev.filter((e) => e.cartItemId !== id));
         }catch(error) {
