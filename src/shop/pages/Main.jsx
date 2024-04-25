@@ -49,8 +49,8 @@ export default function Main() {
             <Banner/>
 
             {searchQuery && 
-                <div class="center">
-                    <p class="h3 font-weight-bold">{searchQuery}검색 결과</p>
+                <div className="center">
+                    <p className="h3 font-weight-bold">{searchQuery}검색 결과</p>
                 </div>
             }
 

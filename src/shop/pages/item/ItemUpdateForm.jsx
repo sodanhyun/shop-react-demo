@@ -13,52 +13,30 @@ import InputFile from "../../components/item/InputFile";
 import InputField from "../../components/item/InputField";
 
 export default function ItemUpdateForm() {
-    const [itemSellStatus, setItemSellStatus] = useState("SELL");
-    const [id, setId] = useState(null);
-    const [itemNm, setItemNm] = useState("");
-    const [price, setPrice] = useState(0);
-    const [stockNumber, setStockNumber] = useState(0);
-    const [itemDetail, setItemDetail] = useState("");
+    const [data, setData] = useState({});
     const [itemImages, setItemImages] = useState([]);
     const [itemImgDtoList, setItemImgDtoList] = useState([]);
-    const [itemImgIds, setItemImgIds] = useState([]);
     const params = useParams();
     const navigate = useNavigate();
 
     const loadItemDtl = async (itemId) => {
         try{
             const response = await fetcher.get(ITEM + `/${itemId}`);
-            setId(response.data.id);
-            setItemNm(response.data.itemNm);
-            setPrice(response.data.price);
-            setItemDetail(response.data.itemDetail);
-            setStockNumber(response.data.stockNumber);
-            setItemSellStatus(response.data.itemSellStatus);
-            setItemImgDtoList(response.data.itemImgDtoList);
+            const {itemImgDtoList, ...rest} = response.data;
+            setData(rest);
+            setItemImgDtoList(itemImgDtoList);
         }catch(error) {
             alert(error.response.data);
         }
     }
 
     const handleUpdate = async (e) => {
-        const data = {
-            id: id,
-            itemSellStatus: itemSellStatus,
-            itemNm: itemNm,
-            price: price,
-            stockNumber: stockNumber,
-            itemDetail: itemDetail,
-            itemImgIds: itemImgIds
-        }
-        
         try{
             const formData = new FormData();
             formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}));
-
             for(let i=0;  i<itemImages.length; i++) {
                 formData.append("itemImgFile", itemImages[i]);
             }
-
             const response = await fetcher.patch(ADMIN_ITEM, formData);
             alert(response.data);
             navigate(MAIN);
@@ -83,8 +61,13 @@ export default function ItemUpdateForm() {
         }
         target.nextSibling.innerText = filename;
         setItemImages(prev => [...prev, target.files[0]]);
-        setItemImgIds(prev => [...prev, id]);
+        setData({ ...data, ["itemImgIds"] : [...data.itemImgIds, id]});
     }
+
+    const onChangeHandler = (e) => {
+        const {value, name} = e.target;
+        setData({ ...data, [name]: value})
+    };
 
     useEffect(() => {
         if(localStorage.getItem("authority") !== "ROLE_ADMIN") {
@@ -100,8 +83,9 @@ export default function ItemUpdateForm() {
             <p className="h2">상품 등록</p>
 
             <InputSelect
-            value={itemSellStatus}
-            onChange={(e) => setItemSellStatus(e.target.value)}>
+            name="itemSellStatus"
+            value={data.itemSellStatus}
+            onChange={onChangeHandler}>
                 <option value="SELL">판매중</option>
                 <option value="SOLD_OUT">품절</option>
             </InputSelect>
@@ -110,8 +94,9 @@ export default function ItemUpdateForm() {
             title="상품명"
             placeholder="상품명을 입력해주세요"
             required
-            value={itemNm}
-            onChange={(e) => setItemNm(e.target.value)}
+            name="itemNm"
+            value={data.itemNm}
+            onChange={onChangeHandler}
             />
 
             <InputField
@@ -119,8 +104,9 @@ export default function ItemUpdateForm() {
             type="number"
             placeholder="상품의 가격을 입력해주세요"
             required
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            name="price"
+            value={data.price}
+            onChange={onChangeHandler}
             />
 
             <InputField
@@ -128,15 +114,17 @@ export default function ItemUpdateForm() {
             type="number"
             placeholder="상품의 재고를 입력해주세요"
             required
-            value={stockNumber}
-            onChange={(e) => setStockNumber(e.target.value)}
+            name="stockNumber"
+            value={data.stockNumber}
+            onChange={onChangeHandler}
             />
 
             <InputArea
             title="상품 상세 내용"
             required
-            value={itemDetail}
-            onChange={(e) => setItemDetail(e.target.value)}
+            name="itemDetail"
+            value={data.itemDetail}
+            onChange={onChangeHandler}
             />
 
             <div className="form-group">

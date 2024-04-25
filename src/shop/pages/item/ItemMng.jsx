@@ -45,18 +45,15 @@ export default function ItemMng() {
     return (
         <>
         <Header/>
-
         <div className="content">
             <Items items={items} />
         </div>
-
         <PageSearchBar 
         loadfunc={loadPage} 
         totalPages={totalPages}
         maxPageNum={maxPageNum}
         pageNum={pageNum}
         />
-
         <Footer/>
         </>
     )

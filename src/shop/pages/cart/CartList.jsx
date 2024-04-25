@@ -98,6 +98,7 @@ export default function CartList() {
                     <tbody>
                     {cartItems?.map((cartItem) => 
                         <CartItem
+                            key={cartItem.cartItemId}
                             cartItem={cartItem}
                             setCartItems={setCartItems}
                             checkedItemIds={checkedItemIds}
