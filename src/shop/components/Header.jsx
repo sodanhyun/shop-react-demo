@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CART_LIST, ITEM_FORM, ITEM_MNG, LOGIN, MAIN, ORDER_HIST } from "../../constants/page_constant";
-import Logout from "./Logout";
+import Logout from "./auth/Logout";
 
 export default function Header({...props}) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import fetcher from "../../fetcher";
-import { LOGOUT_API } from "../../constants/api_constant";
-import { LOGIN } from "../../constants/page_constant";
+import fetcher from "../../../fetcher";
+import { LOGOUT_API } from "../../../constants/api_constant";
+import { LOGIN } from "../../../constants/page_constant";
 
 export default function Logout({children}) {
     const refreshToken = localStorage.getItem("refresh_token");

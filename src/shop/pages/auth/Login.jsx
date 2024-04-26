@@ -1,18 +1,18 @@
 import axios from "axios";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { LOGIN_API } from "../../../constants/api_constant";
 import { LOGIN_HANDLER, MAIN, SIGN_UP } from "../../../constants/page_constant";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import TextField from "../../components/TextField";
+import TextField from "../../components/auth/TextField";
 import googleSignIn from "./googleSignIn.png";
 import kakaoSignIn from "./kakao.png";
 
 export default function Login() {
     const [data, setData] = useState({
-        id: "",
-        address: ""
+        email: "",
+        password: ""
     });
     const [error, setError] = useState("");
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -47,8 +47,8 @@ export default function Login() {
                 type="email"
                 placeholder="이메일을 입력해주세요"
                 required
-                name="id"
-                value={data.id}
+                name="email"
+                value={data.email}
                 onChange={onChangeHandler}
                 />
                 <TextField

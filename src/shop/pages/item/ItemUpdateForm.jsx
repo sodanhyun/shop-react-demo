@@ -6,7 +6,7 @@ import fetcher from "../../../fetcher";
 import { ADMIN_ITEM, ITEM } from "../../../constants/api_constant";
 import { useNavigate, useParams } from "react-router-dom";
 import { MAIN, PAGE_403 } from "../../../constants/page_constant";
-import Button from "../../components/Button";
+import Button from "../../components/item/Button";
 import InputSelect from "../../components/item/InputSelect";
 import InputArea from "../../components/item/InputArea";
 import InputFile from "../../components/item/InputFile";

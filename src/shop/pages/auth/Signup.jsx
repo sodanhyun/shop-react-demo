@@ -5,11 +5,11 @@ import { LOGIN } from "../../../constants/page_constant";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import axios from "axios";
-import TextField from "../../components/TextField";
+import TextField from "../../components/auth/TextField";
 
 export default function Signup() {
     const [data, setData] = useState({
-        id: "",
+        email: "",
         name: "",
         password: "",
         address: ""
@@ -56,8 +56,8 @@ export default function Signup() {
                 type="email" 
                 placeholder="이메일을 입력해주세요"
                 required
-                name="id"
-                value={data.id}
+                name="email"
+                value={data.email}
                 onChange={onChangeHandler}
                 />
                 <TextField
