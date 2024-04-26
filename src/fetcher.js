@@ -41,19 +41,9 @@ fetcher.interceptors.response.use(
 )
 
 const tokenRefresh = async () => {
-    const refreshToken = localStorage.getItem("refresh_token");
-
     try{
-        const formData = new FormData();
-        formData.append("refreshToken", refreshToken);
-
-        const response = await axios.post(
-            API_BASE_URL + TOKEN_REFRESH_API,
-            formData
-        );
-
+        const response = await axios.get(API_BASE_URL + TOKEN_REFRESH_API);
         localStorage.setItem("access_token", response.data.accessToken);
-        localStorage.setItem("refresh_token", response.data.refreshToken);
         localStorage.setItem("authority", response.data.authority);
     }catch(error) {
         window.location.href = LOGIN;

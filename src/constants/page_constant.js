@@ -2,6 +2,7 @@ export const MAIN = "/";
 
 export const SIGN_UP = "/signup";
 export const LOGIN = "/login";
+export const LOGIN_HANDLER = "/login/handler"
 
 export const CART_LIST = "/cartlist";
 

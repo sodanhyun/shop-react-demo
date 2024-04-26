@@ -10,7 +10,8 @@ import {
   ITEM_FORM,
   ITEM_MNG,
   ITEM_DTL,
-  ITEM_UPDATE_FORM
+  ITEM_UPDATE_FORM,
+  LOGIN_HANDLER
 } from "./constants/page_constant";
 import Page403 from "./shop/pages/errorPages/Page403";
 import Page404 from "./shop/pages/errorPages/Page404";
@@ -23,6 +24,7 @@ import ItemForm from "./shop/pages/item/ItemForm";
 import ItemMng from "./shop/pages/item/ItemMng";
 import ItemDtl from "./shop/pages/item/ItemDtl";
 import ItemUpdateForm from "./shop/pages/item/ItemUpdateForm";
+import LoginHandler from "./shop/pages/auth/LoginHandler";
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route path={MAIN} element={<Main/>} />
         <Route path={LOGIN} element={<Login/>} />
         <Route path={SIGN_UP} element={<Signup/>} />
+        <Route path={LOGIN_HANDLER} element={<LoginHandler/>}/>
         <Route path={CART_LIST} element={<CartList/>}/>
         <Route path={ORDER_HIST} element={<OrderHist/>}/>
         <Route path={ITEM_FORM} element={<ItemForm/>}/>
