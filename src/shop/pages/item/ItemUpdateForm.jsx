@@ -33,9 +33,9 @@ export default function ItemUpdateForm() {
     const handleUpdate = async (e) => {
         try{
             const formData = new FormData();
-            formData.append("data", new Blob([JSON.stringify(data)], {type: "application/json"}));
+            formData.append("itemFormDto", new Blob([JSON.stringify(data)], {type: "application/json"}));
             for(let i=0;  i<itemImages.length; i++) {
-                formData.append("itemImgFile", itemImages[i]);
+                formData.append("itemImgFiles", itemImages[i]);
             }
             const response = await fetcher.patch(ADMIN_ITEM, formData);
             alert(response.data);
