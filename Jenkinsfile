@@ -16,7 +16,7 @@ pipeline {
             steps {  
                 sh 'docker stop shop-react-demo || true'  
                 sh 'docker rm shop-react-demo || true'  
-                sh 'docker run -d -p 80:80 -p 443:443 --name shop-react-demo shop-react-demo'  
+                sh 'docker run -d -p 82:80 --name shop-react-demo shop-react-demo'  
             }  
         }  
     }  
